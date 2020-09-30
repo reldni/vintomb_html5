@@ -27,11 +27,6 @@ abstract Music(String) from String
     inline function get_url() return 'assets/music/$id.mp3';
 }
 
-
-/**
- * ...
- * @author The Behemoth
- */
 class Assets
 {
     // Misc. Art

@@ -8,10 +8,6 @@ import vinnie.Inventory.InventoryItemType;
 
 typedef PasscodeState = { scene: Class<Scene>, inventory: Array<InventoryItemType>, shades: Bool };
 
-/**
- * ...
- * @author The Behemoth
- */
 class MainMenu extends Scene
 {
     public static var PASSCODE_GAMES: Map<String, PasscodeState> =

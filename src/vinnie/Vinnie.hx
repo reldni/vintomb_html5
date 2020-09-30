@@ -1,9 +1,24 @@
+/**
+    Vinnie's Tomb: Chapter 1 HTML5 Edition
+    Original game by Troy Scott, 1997
+    HTML5 recreation by Mike Welsh, 2016
+
+    This code is licensed under the MIT license.
+    See LICENSE.md for details.
+
+    https://github.com/reldni/vintomb_html5
+**/
+
 package vinnie;
 import haxe.Timer;
 import js.Browser;
 import js.html.ButtonElement;
 import js.html.Element;
 
+/**
+    The main controller for the game.
+    Manages the HTML DOM and starts the various scenes.
+**/
 class Vinnie
 {
     public static inline var EXIT_URL = "http://www.reldni.com";

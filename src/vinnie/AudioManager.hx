@@ -4,10 +4,6 @@ import js.Browser;
 import js.html.Audio;
 import vinnie.Assets;
 
-/**
- * ...
- * @author The Behemoth
- */
 class AudioManager
 {
     public function new( game : Vinnie )

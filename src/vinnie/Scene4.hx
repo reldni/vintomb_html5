@@ -2,10 +2,6 @@ package vinnie;
 import js.html.Element;
 import js.html.Text;
 
-/**
- * ...
- * @author The Behemoth
- */
 class Scene4 extends Scene
 {
     public function new( game : Vinnie )

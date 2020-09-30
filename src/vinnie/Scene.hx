@@ -8,10 +8,6 @@ import vinnie.Inventory.InventoryItem;
 import vinnie.Inventory.InventoryItemType;
 import vinnie.Assets;
 
-/**
- * ...
- * @author The Behemoth
- */
 @:autoBuild( vinnie.Macros.buildScene() )
 class Scene
 {

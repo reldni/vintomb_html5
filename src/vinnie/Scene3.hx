@@ -1,9 +1,5 @@
 package vinnie;
 
-/**
- * ...
- * @author The Behemoth
- */
 class Scene3 extends Scene
 {
     public function new( game : Vinnie )

@@ -3,10 +3,6 @@ import js.html.Audio;
 import js.html.ButtonElement;
 import js.html.Element;
 
-/**
- * ...
- * @author The Behemoth
- */
 class Scene2 extends Scene
 {
     static inline var BUTTON_WIDTH = 41;
