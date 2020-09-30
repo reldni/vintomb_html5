@@ -1,0 +1,4 @@
+--class-path src
+--dce full
+--js bin/vinnie.js
+--main vinnie.Vinnie
