@@ -6,13 +6,15 @@ import js.html.ImageElement;
 import js.html.InputElement;
 import vinnie.Inventory.InventoryItemType;
 
+typedef PasscodeState = { scene: Class<Scene>, inventory: Array<InventoryItemType>, shades: Bool };
+
 /**
  * ...
  * @author The Behemoth
  */
 class MainMenu extends Scene
 {
-    public static var PASSCODE_GAMES =
+    public static var PASSCODE_GAMES: Map<String, PasscodeState> =
     [
         "ALVIN" => { scene: Scene3,  inventory: [Magnet, Sword], shades: false },
         "LALAL" => { scene: Scene8,  inventory: [Magnet, Sword, SkullThatOozesBloodIntermittently, Diamond, Banana], shades: false },
