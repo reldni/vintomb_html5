@@ -21,7 +21,7 @@ import js.html.Element;
 **/
 class Vinnie
 {
-    public static inline var EXIT_URL = "http://www.newgrounds.com/portal/view/680030";
+    public static inline var EXIT_URL = "http://www.reldni.com";
 
     public static function main()
     {
@@ -122,10 +122,12 @@ class Vinnie
         // Listen for F1.
         Browser.document.addEventListener( "keydown", onKeyDown );
 
-        ngio = new NewgroundsIo("44327:rIFclyWk", "/h8Z2iEtyOI8jYdLqCZZKg==");
-        ngio.getValidSession( function() {} );
-        ngio.queueComponent("Medal.getList", {} );
-        ngio.executeQueue();
+        #if newgrounds
+            ngio = new NewgroundsIo("44327:rIFclyWk", "/h8Z2iEtyOI8jYdLqCZZKg==");
+            ngio.getValidSession( function() {} );
+            ngio.queueComponent("Medal.getList", {} );
+            ngio.executeQueue();
+        #end
 
         startScene( new MainMenu( this ) );
     }
