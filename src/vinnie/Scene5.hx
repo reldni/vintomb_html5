@@ -65,7 +65,7 @@ class Scene5 extends Scene
         if( !wallMoved && isDraggingVinnie )
         {
             cancelDrag();
-            message( "You cannot break or penetrate the metal walls." );
+            message( "You cannot break or penetrate the metal walls.", "Hint" );
         }
     }
 

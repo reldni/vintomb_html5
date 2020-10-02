@@ -165,18 +165,20 @@ class MainMenu extends Scene
 
     function onLightBulb()
     {
-        message( "It's nice to see you again Fred.  How are the wife and kids?" );
+        message( "It's nice to see you again Fred.  How are the wife and kids?", "Hello.", Info ).then( function() {
 
-        lightBulbCount++;
+            lightBulbCount++;
 
-        if( lightBulbCount >= 6 )
-        {
-            audio.playSound( Assets.completeScene ).then( function ()
+            if( lightBulbCount >= 6 )
             {
-                game.bonusScenes = true;
-                message( "You now have access to the bonus scenes.  All you have to do is find them." );
-            } );
-        }
+                audio.playSound( Assets.completeScene, true ).then( function ()
+                {
+                    game.bonusScenes = true;
+                    game.unlockMedal( Medal.Fred );
+                    message( "You now have access to the bonus scenes.  All you have to do is find them.", "Vinnie's Tomb Chapter One", None );
+                } );
+            }
+        } );
     }
 
     function makeButton( label : String )
@@ -210,7 +212,7 @@ class MainMenu extends Scene
             var passInfo = PASSCODE_GAMES.get( passCodeText.value.toUpperCase() );
             if( passInfo == null )
             {
-                playSound( Assets.vin22, true ).then( function() message( "INVALID PASS CODE" ) );
+                playSound( Assets.vin22, true ).then( function() message( "INVALID PASS CODE", "Sorry", Caution ) );
             }
             else
             {

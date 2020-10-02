@@ -31,6 +31,9 @@ class Scene
         inventory.preloadItems();
         game.preloader.preloadArt( Assets.vinnie );
         game.preloader.preloadArt( Assets.vinnieShades );
+        game.preloader.preloadArt( Assets.info );
+        game.preloader.preloadArt( Assets.caution );
+        game.preloader.preloadArt( Assets.msgboxClose );
         game.preloader.preloadSound( Assets.death );
         game.preloader.preloadSound( Assets.getItem );
         game.preloader.preloadSound( Assets.getItem );
@@ -133,9 +136,146 @@ class Scene
         message( msg );
     }
 
-    public function message( msg : String )
+    public function message( msg : String, ?title : String, ?icon : MessageIcon ) : MessageHandle
     {
-        Browser.alert( msg );
+        var modalDiv = document.createDivElement();
+        modalDiv.style.position = "fixed";
+        modalDiv.style.width = "100%";
+        modalDiv.style.height = "100%";
+        modalDiv.style.zIndex = "10003";
+
+        var bgDiv = document.createDivElement();
+        bgDiv.style.position = "fixed";
+        bgDiv.style.width = "100%";
+        bgDiv.style.height = "100%";
+        bgDiv.style.backgroundColor = "black";
+        bgDiv.style.opacity = "0.6";
+        modalDiv.appendChild( bgDiv );
+
+        var msgDiv = document.createDivElement();
+        msgDiv.style.opacity = "1";
+        msgDiv.style.backgroundColor = "#c0c0c0";
+        msgDiv.style.zIndex = "10004";
+        msgDiv.style.textAlign = "left";
+        msgDiv.style.fontFamily = '"MS Sans Serif", sans-serif';
+        msgDiv.style.fontSize = "8.25pt";
+        msgDiv.style.borderStyle = "outset";
+        msgDiv.style.borderColor = "#ffffff #808080 #808080 #ffffff";
+        msgDiv.style.cursor = "default";
+        msgDiv.style.position = "fixed";
+        modalDiv.appendChild( msgDiv );
+
+        var titleDiv = document.createDivElement();
+        titleDiv.style.height = "10px";
+        titleDiv.style.padding = "4px";
+        titleDiv.style.marginBottom = "14px";
+        titleDiv.style.backgroundColor = "#000080";
+        titleDiv.style.fontWeight = "700";
+        titleDiv.style.color = "white";
+        titleDiv.style.textAlign = "left";
+        titleDiv.appendChild( document.createTextNode( title != null ? title : "Vinnie's Tomb" ) );
+
+        var closeImg = document.createImageElement();
+        closeImg.src = Assets.msgboxClose.url;
+        closeImg.style.position = "absolute";
+        closeImg.style.top = "2px";
+        titleDiv.appendChild( closeImg );
+
+        msgDiv.appendChild( titleDiv );
+
+        if( icon == null )
+        {
+            icon = Info;
+        }
+
+        if( icon != None )
+        {
+            var iconDiv = document.createImageElement();
+            iconDiv.src = switch( icon )
+            {
+                case Info:      Assets.info.url;
+                case Caution:   Assets.caution.url;
+                case _:         "";
+            }
+            iconDiv.style.display = "block";
+            iconDiv.style.position = "absolute";
+            iconDiv.style.left = "13px";
+            iconDiv.style.top = "32px";
+            msgDiv.appendChild( iconDiv );
+        }
+
+        var textDiv = document.createDivElement();
+        textDiv.appendChild( document.createTextNode(msg) );
+        msgDiv.appendChild( textDiv );
+
+        var okButton = document.createButtonElement();
+        okButton.style.display = "block";
+        okButton.style.margin = "0 auto 13px auto";
+        okButton.style.backgroundColor = "#c0c0c0";
+        okButton.style.width = "75px";
+        okButton.style.height = "23px";
+        okButton.appendChild( document.createTextNode("OK") );
+        msgDiv.appendChild( okButton );
+        body.appendChild( modalDiv );
+
+        var height = msgDiv.clientHeight;
+        msgDiv.style.marginTop = '-${height/2}px';
+
+        game.isPaused = true;
+        okButton.focus();
+
+        var width = 500.0;
+        var textWidth = textDiv.clientWidth;
+        if( textWidth > 0 )
+        {
+            width = Math.min( 500, textWidth );
+        }
+        if( icon != None )
+        {
+            textDiv.style.margin = "24px 13px 30px 62px";
+            width += 76;
+        }
+        else
+        {
+            textDiv.style.margin = "24px 13px 30px 13px";
+            width += 26;
+        }
+
+        msgDiv.style.width = '${width}px';
+        msgDiv.style.margin = "0";
+        msgDiv.style.position = "fixed";
+        var msgX = (Browser.window.innerWidth - msgDiv.clientWidth) / 2;
+        var msgY = (Browser.window.innerHeight - msgDiv.clientHeight) / 2;
+        msgDiv.style.left = '${msgX}px';
+        msgDiv.style.top = '${msgY}px';
+
+        titleDiv.style.width = '${width-8}px';
+        closeImg.style.left = '${width - 19}px';
+
+        titleDiv.onmousedown = function(e) {
+            var ix = e.pageX;
+            var iy = e.pageY;
+
+            function stopDrag() {
+                document.onmouseleave = document.onmousemove = document.onmouseup = null;
+            }
+
+            document.onmousemove = function(e) {
+                msgX += e.pageX - ix;
+                msgY += e.pageY - iy;
+                msgDiv.style.left = '${msgX}px';
+                msgDiv.style.top = '${msgY}px';
+                ix = e.pageX;
+                iy = e.pageY;
+            }
+
+            document.onmouseup = stopDrag;
+            document.onmouseleave = stopDrag;
+        };
+
+        return new MessageHandle( game, modalDiv, okButton );
+        // OLD:
+        //Browser.alert( msg );
     }
 
     function makeArt( art : Art, x : Int, y : Int, ?onClick : Void->Void )
@@ -286,7 +426,7 @@ class Scene
                 {
                     inventory.addItem( itemType );
                     inventory.show();
-                    message( 'You now have ${itemInfo.name}' );
+                    message( 'You now have ${itemInfo.name}', "Item collected!" );
                     cancelDrag();
                 }
             );
@@ -351,49 +491,62 @@ class Scene
 
     function nextScene( nextScene : Class<Scene>, ?passCode : String, ?msg : String )
     {
-        audio.playSound( Assets.completeScene, true ).then(
-            function()
-            {
-                message( msg == null ? 'You have completed $title' : msg );
-                if( passCode != null )
-                {
-                    var gameData = MainMenu.PASSCODE_GAMES.get( passCode );
-                    if( gameData != null )
-                    {
-                        var showPasscode = game.shadesOn == gameData.shades;
-                        for( item in gameData.inventory )
-                        {
-                            if( !inventory.hasItem( item ) )
-                            {
-                                showPasscode = false;
-                                break;
-                            }
-                        }
+        audio.playSound( Assets.completeScene, true ).then( function() {
+            var handle = message( msg == null ? 'You have completed $title' : msg );
 
-                        if(showPasscode) message( '$passCode' );
+            var showPasscode = false;
+            if( passCode != null )
+            {
+                var gameData = MainMenu.PASSCODE_GAMES.get( passCode );
+                if( gameData != null )
+                {
+                    showPasscode = game.shadesOn == gameData.shades;
+                    for( item in gameData.inventory )
+                    {
+                        if( !inventory.hasItem( item ) )
+                        {
+                            showPasscode = false;
+                            break;
+                        }
                     }
                 }
+            }
+
+            var gotoNextScene = function() {
                 var scene = Type.createInstance( nextScene, [game] );
                 game.startScene( scene );
             }
-        );
+
+            if(showPasscode)
+            {
+                handle.then(function () {
+                    message( '$passCode', "Remember This Pass Code" ).then( gotoNextScene );
+                } );
+            }
+            else
+            {
+                handle.then( gotoNextScene );
+            }
+        } );
     }
 
-    function transitionToNextScene( nextScene : Class<Scene>, transition : Void->Void )
+    function transitionToNextScene( nextScene : Class<Scene>, transition : (Void->Void)->Void )
     {
         mainView.style.display = "none";
         audio.stopMusic();
-        transition();
-        var scene = Type.createInstance( nextScene, [game] );
-        game.startScene( scene );
+        transition( function() {
+            var scene = Type.createInstance( nextScene, [game] );
+            game.startScene( scene );
+        } );
     }
 
     function bonusScene( id : Int )
     {
         if( game.bonusScenes && !game.bonusSceneCompleted[ id ] )
         {
-            message( "YOU HAVE FOUND A HIDDEN BONUS SCENE" );
-            game.startScene( new ActionScene( game, Type.getClass( this ), id ) );
+            message( "YOU HAVE FOUND A HIDDEN BONUS SCENE" ).then( function() {
+                game.startScene( new ActionScene( game, Type.getClass( this ), id ) );
+            } );
         }
     }
 
@@ -408,7 +561,14 @@ class Scene
 
     function exitGame()
     {
-        document.location.href = Vinnie.EXIT_URL;
+        if( Browser.window.top != null )
+        {
+            Browser.window.top.location.href = Vinnie.EXIT_URL;
+        }
+        else
+        {
+            document.location.href = Vinnie.EXIT_URL;
+        }
     }
 
     function isEquipped( itemType : InventoryItemType )
@@ -782,4 +942,34 @@ class Scene
     public var scale(default, null) : Float;
 
     var equippedItem : Null<InventoryItem>;
+}
+
+class MessageHandle
+{
+    public function new( game : Vinnie, modalDiv : Element, okButton : Element )
+    {
+        onComplete = function() {
+            if( modalDiv != null && modalDiv.parentElement != null ) {
+                modalDiv.parentElement.removeChild( modalDiv );
+            }
+            game.isPaused = false;
+        }
+        okButton.onclick = function(_) onComplete();
+    }
+
+    public function then( f : Void->Void ) : MessageHandle
+    {
+        var oldOnComplete = onComplete;
+        onComplete = function() { oldOnComplete(); f(); }
+        return this;
+    }
+
+    var onComplete : Void->Void;
+}
+
+enum MessageIcon
+{
+    None;
+    Info;
+    Caution;
 }

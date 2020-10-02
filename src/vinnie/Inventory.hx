@@ -173,37 +173,41 @@ class Inventory
 
     function onEquipItem( item : InventoryItem )
     {
+        if( game.scene == null )
+        {
+            return;
+        }
+
         if( item.type == ToolBox )
         {
             if( !hasItem( EightBall ) )
             {
-                Browser.alert( "You find an eight ball inside the metal box." );
-                addItem( EightBall );
+                game.scene.message( "You find an eight ball inside the metal box." ).then( function() {
+                    addItem( EightBall );
+                } );
             }
             else
             {
-                Browser.alert( "The Metal Box is empty." );
+                game.scene.message( "The Metal Box is empty." );
             }
         }
         else if( item.type == EightBall && Type.getClass( game.scene ) != Scene13 )
         {
-            Browser.alert( "You do not need the eight ball in this scene" );
+            game.scene.message( "You do not need the eight ball in this scene" );
         }
         else if( item.type == CD && Type.getClass( game.scene ) != Scene17 )
         {
-            Browser.alert( "You do not have a CD player to play the disc" );
+            game.scene.message( "You do not have a CD player to play the disc" );
         }
         else if( item.type == Shades )
         {
             game.shadesOn = true;
             removeItem( Shades );
-            Browser.alert( "You put on the cool shades." );
-            if( game.scene != null )
-            {
+            game.scene.message( "You put on the cool shades." ).then( function() {
                 game.scene.wearShades();
-            }
+            } );
         }
-        else if( game.scene != null )
+        else
         {
             game.scene.equipItem( item );
         }

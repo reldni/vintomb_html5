@@ -142,18 +142,15 @@ class Scene6 extends Scene
         {
             if( isDraggingVinnie )
             {
-                playSound( Assets.vin10, true ).then( function()
-                    {
-                        message( "Can I take a look at the key?" );
-                        playSound( Assets.snake10, true ).then( function()
-                            {
-                                message( "I guess so." );
-                                key.style.display = "block";
-                                cancelDrag();
-                            }
-                        );
-                    }
-                );
+                playSound( Assets.vin10, true ).then( function() {
+                    message( "Can I take a look at the key?", "You ask the snake..." ).then( function() {
+                        playSound( Assets.snake10, true ).then( function() {
+                            message( "I guess so.", "The snake replies..." );
+                            key.style.display = "block";
+                            cancelDrag();
+                        } );
+                    } );
+                } );
             }
             else if( equippedItem != null )
             {
@@ -161,39 +158,43 @@ class Scene6 extends Scene
                 {
                     case Magnet:
                         playSound( Assets.vin6, true ).then( function() {
-                            message( "Will you trade the key for this magnet?" );
-                            playSound( Assets.snake5, true ).then( function() {
-                                message( "That's a nifty magnet.  However, I don't think I need one.  The answer is no." );
+                            message( "Will you trade the key for this magnet?", "You ask the snake..." ).then( function() {
+                                playSound( Assets.snake5, true ).then( function() {
+                                    message( "That's a nifty magnet.  However, I don't think I need one.  The answer is no.", "The snake replies..." );
+                                } );
                             } );
                         } );
 
                     case Diamond:
                         playSound( Assets.vin7, true ).then( function() {
-                            message( "Will you trade the key for this diamond?" );
-                            playSound( Assets.snake6, true ).then( function() {
-                                message( "No.  Diamonds are worthless in Underworld.  Why do you think it was lying in the garbage?" );
+                            message( "Will you trade the key for this diamond?", "You ask the snake..." ).then( function() {
+                                playSound( Assets.snake6, true ).then( function() {
+                                    message( "No.  Diamonds are worthless in Underworld.  Why do you think it was lying in the garbage?", "The snake replies..." );
+                                } );
                             } );
                         } );
 
                     case Banana:
                         playSound( Assets.vin8, true ).then( function() {
-                            message( "Will you trade the key for this banana?" );
-                            playSound( Assets.snake7, true ).then( function() {
-                                message( "What do I look like?  I'm a snake, not a monkey." );
+                            message( "Will you trade the key for this banana?", "You ask the snake..." ).then( function() {
+                                playSound( Assets.snake7, true ).then( function() {
+                                    message( "What do I look like?  I'm a snake, not a monkey.", "The snake replies..." );
+                                } );
                             } );
                         } );
 
                     case SkullThatOozesBloodIntermittently:
                         playSound( Assets.vin9, true ).then( function() {
-                            message( "Will you trade the key for this skull that oozes blood intermittently?" );
-                            playSound( Assets.snake8, true ).then( function() {
-                                message( "I vaguely recall my brother mentioning something about a skull.  I better not make the trade though." );
+                            message( "Will you trade the key for this skull that oozes blood intermittently?", "You ask the snake..." ).then( function() {
+                                playSound( Assets.snake8, true ).then( function() {
+                                    message( "I vaguely recall my brother mentioning something about a skull.  I better not make the trade though.", "The snake replies..." );
+                                } );
                             } );
                         } );
 
                     case Sword:
                         playSound( Assets.snake9, true ).then( function() {
-                            message( "Are you threatening me?  Please go away before I lick you with my forked tongue." );
+                            message( "Are you threatening me?  Please go away before I lick you with my forked tongue.", "The snake hisses..." );
                         } );
 
                     case _:

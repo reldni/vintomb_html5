@@ -32,27 +32,30 @@ class Scene3 extends Scene
     function onHoleClicked()
     {
         audio.playSound( Assets.teleport );
-        message( "You have entered the underworld and completed Scene Three" );
-        transitionToNextScene( Scene4, underworldTransition );
+        message( "You have entered the underworld and completed Scene Three" ).then( function() {
+            transitionToNextScene( Scene4, underworldTransition );
+        } );
     }
 
-    function underworldTransition()
+    function underworldTransition( handler : Void -> Void )
     {
         audio.playSound( Assets.nar1 );
-        message( "You gently ride down on a cushion of air to the underworld.  You do not have to wander far until you reach two party-bots.  These stationary robots had been fused together to guard and protect.  They were programmed to throw pies at anyone entering the underworld during the war with the drunken eyed sailors of moldville.  The war has been over for years and Underworld has become a wealthy metropolis.  Inside the underworld city lies many lucrative franchises and taco stands.  You know that your journey most likely lies around the outskirts of the Underworld city.  Therefore, you will not have an opportunity to sample the fine dining establishments." );
+        message( "You gently ride down on a cushion of air to the underworld.  You do not have to wander far until you reach two party-bots.  These stationary robots had been fused together to guard and protect.  They were programmed to throw pies at anyone entering the underworld during the war with the drunken eyed sailors of moldville.  The war has been over for years and Underworld has become a wealthy metropolis.  Inside the underworld city lies many lucrative franchises and taco stands.  You know that your journey most likely lies around the outskirts of the Underworld city.  Therefore, you will not have an opportunity to sample the fine dining establishments.", "You enter the underworld..." ).then(handler);
     }
 
     function onFried()
     {
         if( isDraggingVinnie )
         {
-            message( "You climb to the top of the tree.  A freak bolt of lightning kills you!" );
-            cancelDrag();
-            vinnie.src = Assets.vinnieFried.url;
-            vinnie.style.left = "8px";
-            vinnie.style.top = "32px";
-            makeArt( Assets.bolt, 24, 8 );
-            vinnieDied();
+            game.unlockMedal( Medal.Zapped );
+            message( "You climb to the top of the tree.  A freak bolt of lightning kills you!", "OH NO!", Caution ).then( function() {
+                cancelDrag();
+                vinnie.src = Assets.vinnieFried.url;
+                vinnie.style.left = "8px";
+                vinnie.style.top = "32px";
+                makeArt( Assets.bolt, 24, 8 );
+                vinnieDied();
+            } );
         }
     }
 

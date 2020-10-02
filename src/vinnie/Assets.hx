@@ -27,6 +27,7 @@ abstract Music(String) from String
     inline function get_url() return 'assets/music/$id.mp3';
 }
 
+
 class Assets
 {
     // Misc. Art
@@ -57,6 +58,11 @@ class Assets
     public static var scene14Line2    : Art       = "scene14-line2";
     public static var scene17door     : Art       = "scene17-door";
     public static var cdBeam          : Art       = "cd-beam";
+
+    // Message Box Icons
+    public static var info            : Art       = "info";
+    public static var caution         : Art       = "caution";
+    public static var msgboxClose     : Art       = "msgbox-close";
 
     // Bg Art
     public static var bgScene1        : Art       = "scene1";

@@ -21,7 +21,7 @@ import js.html.Element;
 **/
 class Vinnie
 {
-    public static inline var EXIT_URL = "http://www.reldni.com";
+    public static inline var EXIT_URL = "http://www.newgrounds.com/portal/view/680030";
 
     public static function main()
     {
@@ -122,6 +122,11 @@ class Vinnie
         // Listen for F1.
         Browser.document.addEventListener( "keydown", onKeyDown );
 
+        ngio = new NewgroundsIo("44327:rIFclyWk", "/h8Z2iEtyOI8jYdLqCZZKg==");
+        ngio.getValidSession( function() {} );
+        ngio.queueComponent("Medal.getList", {} );
+        ngio.executeQueue();
+
         startScene( new MainMenu( this ) );
     }
 
@@ -165,6 +170,14 @@ class Vinnie
         }
     }
 
+    public function unlockMedal(medalId: Medal)
+    {
+        if( ngio != null && ngio.user != null )
+        {
+            ngio.callComponent("Medal.unlock", { id: cast(medalId, Int) }, function(result) {});
+        }
+    }
+
     public var preloader(default, null) : Preloader;
     public var scene(default, null) : Scene;
     public var audio(default, null) : AudioManager;
@@ -174,6 +187,8 @@ class Vinnie
     public var bonusScenes : Bool;
     public var bonusSceneCompleted : Array<Bool>;
     public var shadesOn : Bool;
+
+    public var ngio : NewgroundsIo;
 
     var loadingTimer : Timer;
     var loadingScreen : Element;
@@ -227,6 +242,13 @@ class Vinnie
         if( event.keyCode == F1 )
         {
             help();
+            return false;
+        }
+
+        var TAB = 9;
+        if( isPaused && event.keyCode == 9 )
+        {
+            event.preventDefault();
             return false;
         }
 

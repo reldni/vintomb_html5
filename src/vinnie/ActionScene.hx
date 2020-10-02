@@ -49,15 +49,16 @@ class ActionScene extends Scene
     {
         super.start();
 
-        message( "IN THIS BONUS SCENE, USE THE ARROW KEYS TO MOVE VINNIE TO THE TOP" );
+        message( "IN THIS BONUS SCENE, USE THE ARROW KEYS TO MOVE VINNIE TO THE TOP", "Vinnie's Tomb Bonus Scene" ).then( function() {
 
-        makeArt( Assets.bgAction, 0, 0 );
+            makeArt( Assets.bgAction, 0, 0 );
 
-        vinnieX = 200;
-        vinnieY = 305;
-        makeVinnie( vinnieX, vinnieY );
+            vinnieX = 200;
+            vinnieY = 305;
+            makeVinnie( vinnieX, vinnieY );
 
-        Browser.window.addEventListener( "keydown", onKeyPress );
+            Browser.window.addEventListener( "keydown", onKeyPress );
+        } );
     }
 
     public override function end()
@@ -121,8 +122,9 @@ class ActionScene extends Scene
         Browser.window.removeEventListener( "keydown", onKeyPress );
         playSound( Assets.death );
         vinnie.style.display = "none";
-        message( "You have stepped on a hidden Death Trap.  You must try again." );
-        game.startScene( this );
+        message( "You have stepped on a hidden Death Trap.  You must try again." ).then( function() {
+            game.startScene( this );
+        } );
     }
 
     function onWin()

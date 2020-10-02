@@ -98,28 +98,30 @@ class Scene10 extends Scene
     {
         if( isEquipped( Sword ) )
         {
-                playSound( Assets.sing11 );
-                message( "Please don't hurt me.  I'll stop singing at night, if you leave me alone." );
+            playSound( Assets.sing11 );
+            message( "Please don't hurt me.  I'll stop singing at night, if you leave me alone.", "The Singing Beast Says ..." ).then( function() {
                 //nextScene( Scene10 );
                 // TODO
                 transitionToNextScene( Scene11,
-                    function()
+                    function(handler)
                     {
                         inventory.show();
                         inventory.addItem( Underwear );
                         inventory.addItem( Cheese );
                         playSound( Assets.nar3 );
-                        message( "Word quickly spreads that you have stopped the beast from singing at night.  After everyone in Fun Land has a good night's sleep, they give you a load of cash and a nicely written thank you note.  You decide to use the money to buy the key from the ill conceived horse.  On the way to the horse's newly constructed hay shack and rib joint  you meet a frog on welfare.  Still feeling like a philanthropist, you foolishly give the frog most of our money.  Fortunately, you still have enough to buy a pair of underwear and cheese." );
-                        inventory.addItem( Money );
-                        playSound( Assets.nar4 );
-                        message( "You decide to buy a lottery ticket with your last dollar.  Fun Land is a peachy place.  You find that the creatures there are really kind and decent.  You meet a monster snail who lets you stay at his hotel free of charge.  In the morning you are informed that the singing beast has moved to Australia.  He will be performing at the opera house one month a week.  You're glad he made out okay.  You are delighted when you win five hundred dollars in the lottery.  You rush to find the horse and buy the key." );
+                        message( "Word quickly spreads that you have stopped the beast from singing at night.  After everyone in Fun Land has a good night's sleep, they give you a load of cash and a nicely written thank you note.  You decide to use the money to buy the key from the ill conceived horse.  On the way to the horse's newly constructed hay shack and rib joint  you meet a frog on welfare.  Still feeling like a philanthropist, you foolishly give the frog most of our money.  Fortunately, you still have enough to buy a pair of underwear and cheese." ).then( function() {
+                            inventory.addItem( Money );
+                            playSound( Assets.nar4 );
+                            message( "You decide to buy a lottery ticket with your last dollar.  Fun Land is a peachy place.  You find that the creatures there are really kind and decent.  You meet a monster snail who lets you stay at his hotel free of charge.  In the morning you are informed that the singing beast has moved to Australia.  He will be performing at the opera house one month a week.  You're glad he made out okay.  You are delighted when you win five hundred dollars in the lottery.  You rush to find the horse and buy the key." ).then(handler);
+                        } );
                     }
                 );
+            } );
         }
         else if( equippedItem != null )
         {
             playSound( Assets.sing10 );
-            message( "I don't want that.  Get lost!" );
+            message( "I don't want that.  Get lost!", "The Singing Beast says ...." );
         }
     }
 

@@ -66,8 +66,9 @@ class Scene16 extends Scene
                 animate( panel, 0.6, ["top" => 0, "height" => 195], function() {
                     playSound( Assets.completeScene, true ).then( function() {
                         panel.style.height = "123px";
-                        message( "You have complete Scene Sixteen" );
-                        game.startScene( new Scene17(game) );
+                        message( "You have complete Scene Sixteen" ).then( function() {
+                            game.startScene( new Scene17(game) );
+                        } );
                     } );
                 } );
 

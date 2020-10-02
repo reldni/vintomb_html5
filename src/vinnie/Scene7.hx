@@ -110,7 +110,7 @@ class Scene7 extends Scene
             else
             {
                 playSound( Assets.getItem, true ).then( function() {
-                    message( "You pry the glittery diamond back out of the hole with the sword." );
+                    message( "You pry the glittery diamond back out of the hole with the sword.", "Vinnie's Tomb Chapter One", None );
                     line.style.display = "none";
                     inventory.addItem( Diamond );
                     diamond.parentNode.removeChild( diamond );
@@ -125,7 +125,7 @@ class Scene7 extends Scene
     {
         if( doorOpened )
         {
-            nextScene( Scene8, "LALAL" );
+            nextScene( Scene8, "LALAL", "You enter Fun Land and complete Scene Seven" );
         }
     }
 

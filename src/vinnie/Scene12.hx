@@ -30,27 +30,25 @@ class Scene12 extends Scene
 
     function onChasmClicked()
     {
-        message( "Travelling for thirty more days you come to a cliff.  You realise you are desperately lost.  You need to find away to rise above Underworld and continue your exciting adventure.  Suddenly a nasty creature jumps from behind you!  It pushes you off the cliff!" );
-        jerk.style.display = "block";
-        animate( vinnie, 1.0, [ "top" => height + 32 ], onFallComplete );
+        message( "Travelling for thirty more days you come to a cliff.  You realise you are desperately lost.  You need to find away to rise above Underworld and continue your exciting adventure.  Suddenly a nasty creature jumps from behind you!  It pushes you off the cliff!", null, Caution ).then( function() {
+            jerk.style.display = "block";
+            animate( vinnie, 1.0, [ "top" => height + 32 ], onFallComplete );
+        } );
     }
 
     function onFallComplete()
     {
-        playSound( Assets.death, true ).then(
-            function()
-            {
-                message( "Oddly enough you did not die.  Instead, you landed on a strategically placed mountain of breakfast cereal." );
-                playSound( Assets.trainWhistle, true ).then(
-                    function()
-                    {
-                        message( "You discover a nearby train station.  You hop aboard the train bound for an unknown destination." );
-                        message( "Being a low budget game, we could not afford a real train, so you'll have to imagine it." );
-                        nextScene( Scene13 );
-                    }
-                );
-            }
-        );
+        playSound( Assets.death, true ).then( function() {
+            message( "Oddly enough you did not die.  Instead, you landed on a strategically placed mountain of breakfast cereal." ).then( function() {
+                playSound( Assets.trainWhistle, true ).then( function() {
+                    message( "You discover a nearby train station.  You hop aboard the train bound for an unknown destination.", "Vinnie's Tomb Chapter One", None ).then( function() {
+                        message( "Being a low budget game, we could not afford a real train, so you'll have to imagine it." ).then( function() {
+                            nextScene( Scene13 );
+                        } );
+                    } );
+                } );
+            } );
+        } );
     }
 
     var jerk : Element;

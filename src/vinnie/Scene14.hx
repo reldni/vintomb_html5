@@ -22,8 +22,8 @@ class Scene14 extends Scene
         playMusic( Assets.musicScene8 );
 
         makeArt( Assets.bgScene14, 0, 0 );
-        makeClickHotspot( 12, 99, 132, 94, message.bind("1") );
-        makeClickHotspot( 301, 135, 39, 33, message.bind("2") );
+        //makeClickHotspot( 12, 99, 132, 94, message.bind("1") );
+        //makeClickHotspot( 301, 135, 39, 33, message.bind("2") );
         // skull 329 34
 
         tombDoor = makeRect( 0, 100, 151, 93, "#808000" );
@@ -111,14 +111,17 @@ class Scene14 extends Scene
     {
         tombDoor.style.display = "none";
         playSound( Assets.getItem, true ).then( function() {
-            message( "You have opened the main door to Vinnie's Tomb" );
-            message( "The glittery diamond has melted into the big blood rock." );
-            if( diamond != null )
-            {
-                diamond.style.display = "none";
-            }
-            message( 'You have completed $title' );
-            game.startScene( new Scene15(game) );
+            message( "You have opened the main door to Vinnie's Tomb" ).then( function() {
+                message( "The glittery diamond has melted into the big blood rock." ).then( function() {
+                    if( diamond != null )
+                    {
+                        diamond.style.display = "none";
+                    }
+                    message( 'You have completed $title' ).then( function() {
+                        game.startScene( new Scene15(game) );
+                    } );
+                } );
+            } );
         } );
     }
 

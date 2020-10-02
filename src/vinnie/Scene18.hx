@@ -41,14 +41,16 @@ class Scene18 extends Scene
         text.style.textAlign = "center";
         text.textContent = "TO BE CONTINUED";
 
-        inventory.removeAllItems();
+        game.unlockMedal( Medal.TheEnd );
+
         inventory.show();
     }
 
     function onEndGameClicked()
     {
         playSound( Assets.death );
-        message( "Thank you for playing Vinnie's Tomb.  Be sure to continue the adventure with Vinnie's Tomb Chapter Two - Shine and Glow Vinnie." );
-        exitGame();
+        message( "Thank you for playing Vinnie's Tomb.  Be sure to continue the adventure with Vinnie's Tomb Chapter Two - Shine and Glow Vinnie.", "Vinnie's Tomb Chapter One", None ).then( function() {
+            exitGame();
+        } );
     }
 }

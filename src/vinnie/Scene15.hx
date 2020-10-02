@@ -33,8 +33,9 @@ class Scene15 extends Scene
     {
         if( isEquipped( Key ) )
         {
-            message( "You try inserting the key into the keyhole.  The key does not seem to fit!  After a few more futile attempts, you realize that the horse may have tricked you.  Perhaps, the snake brothers owned the only key to Vinnie's Tomb.  You get so mad, that you kick the door.  It creaks open.  It must have been unlocked all the time." );
-            nextScene( Scene16 );
+            message( "You try inserting the key into the keyhole.  The key does not seem to fit!  After a few more futile attempts, you realize that the horse may have tricked you.  Perhaps, the snake brothers owned the only key to Vinnie's Tomb.  You get so mad, that you kick the door.  It creaks open.  It must have been unlocked all the time." ).then( function() {
+                nextScene( Scene16 );
+            } );
         }
         else
         {

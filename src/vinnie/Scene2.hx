@@ -118,17 +118,14 @@ class Scene2 extends Scene
         }
         else
         {
-            audio.playSound( Assets.getItem, true ).then(
-                function()
-                {
-                    inventory.addItem( Sword );
-                    inventory.show();
-                    cancelDrag();
-                    sword.parentNode.removeChild( sword );
-                    resetVinnie();
-                    message( 'You now have a sword' );
-                }
-            );
+            audio.playSound( Assets.getItem, true ).then( function() {
+                inventory.addItem( Sword );
+                inventory.show();
+                cancelDrag();
+                sword.parentNode.removeChild( sword );
+                resetVinnie();
+                message( 'You collect a sword' );
+            } );
         }
     }
 
@@ -189,23 +186,24 @@ class Scene2 extends Scene
 
     function onKillerButtonClick( x : Int, y : Int )
     {
-        message( "OH NO!  The Bridge Collapsed!" );
+        game.unlockMedal( Medal.Drowned );
+        message( "OH NO!  The Bridge Collapsed!", "Vinnie Drowns", Caution ).then( function() {
+            collapseBridge();
 
-        collapseBridge();
+            vinnie = makeArt( Assets.vinnieDrown, 128, 88 );
+            mainView.appendChild( vinnie );
 
-        vinnie = makeArt( Assets.vinnieDrown, 128, 88 );
-        mainView.appendChild( vinnie );
+            if( sword != null && sword.parentNode != null )
+            {
+                sword.parentNode.removeChild( sword );
+            }
+            if( exit != null && exit.parentNode != null )
+            {
+                exit.parentNode.removeChild( exit );
+            }
 
-        if( sword != null && sword.parentNode != null )
-        {
-            sword.parentNode.removeChild( sword );
-        }
-        if( exit != null && exit.parentNode != null )
-        {
-            exit.parentNode.removeChild( exit );
-        }
-
-        vinnieDied();
+            vinnieDied();
+        } );
     }
 
     function onExitClicked()
@@ -216,7 +214,7 @@ class Scene2 extends Scene
         }
         else
         {
-            message( "You must cross the river before you can travel to the next scene." );
+            message( "You must cross the river before you can travel to the next scene.", "Hint" );
         }
     }
 

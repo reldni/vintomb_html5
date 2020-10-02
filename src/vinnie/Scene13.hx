@@ -23,7 +23,6 @@ class Scene13 extends Scene
         playMusic( Assets.musicScene7 );
 
         makeArt( Assets.bgScene13, 0, 0 );
-        makeClickHotspot( 0, 0, 93, 69, onSphereClicked );
         makeClickHotspot( 146, 204, 103, 49, onGapClicked );
         makeClickHotspot( 317, 231, 50, 24, message.bind( "Join the vinnie's Tomb fan club." ) );
         makeHoverHotspot( 0, 0, 433, 193, onFellInChasm );
@@ -35,6 +34,8 @@ class Scene13 extends Scene
         exit = makeArt( Assets.exitRight, 392, 16, onExitClicked );
         exit.style.display = "none";
 
+        makeClickHotspot( 0, 0, 93, 69, onSphereClicked );
+
         inventory.show();
     }
 
@@ -43,7 +44,7 @@ class Scene13 extends Scene
         if( isDraggingVinnie )
         {
             cancelDrag();
-            message( "To cross the pit use the sphere of light.  It rests on the other side.  You must wake it if you can.  Then you can get a ride." );
+            message( "To cross the pit use the sphere of light.  It rests on the other side.  You must wake it if you can.  Then you can get a ride.", "You Read The Book ..." );
         }
     }
 
@@ -59,11 +60,13 @@ class Scene13 extends Scene
     {
         if( isDraggingVinnie )
         {
+            game.unlockMedal( Medal.Tripped );
             cancelDrag();
             vinnie.style.display = "none";
             vinnieDied();
-            message( "You fall into the pit of fear and die!" );
-            document.onclick = function(_) exitGame();
+            message( "You fall into the pit of fear and die!", "OH NO!", Caution ).then( function() {
+                document.onclick = function(_) exitGame();
+            } );
         }
     }
 
@@ -86,7 +89,7 @@ class Scene13 extends Scene
         {
             if( isEquipped( Underwear ) )
             {
-                message( "You stretch the underwear over the forked stick in the ground.  Now you have a neato slingshot device.  Wow, this is a cool game!" );
+                message( "You stretch the underwear over the forked stick in the ground.  Now you have a neato slingshot device.  Wow, this is a cool game!", "Vinnie's Tomb Chapter One", None );
                 slingshot.src = Assets.slingshot.url;
                 inventory.removeItem( Underwear );
                 equipItem( null );
@@ -137,10 +140,12 @@ class Scene13 extends Scene
     {
         if( !game.shadesOn )
         {
-            message( "The Ball of light blinds you.  Your eyes burn up and you stagger into the pit of fear and die horribly." );
-            vinnieDied();
-            vinnie.style.display = "none";
-            exitGame();
+            game.unlockMedal( Medal.Blinded );
+            message( "The Ball of light blinds you.  Your eyes burn up and you stagger into the pit of fear and die horribly." ).then( function() {
+                vinnieDied();
+                vinnie.style.display = "none";
+                exitGame();
+            } );
         }
         else
         {
@@ -161,8 +166,9 @@ class Scene13 extends Scene
 
     function onExitClicked()
     {
-        message( "You have crossed the pit of fear!" );
-        nextScene( Scene14 );
+        message( "You have crossed the pit of fear!" ).then( function() {
+            nextScene( Scene14 );
+        } );
     }
 
     var exit : Element;

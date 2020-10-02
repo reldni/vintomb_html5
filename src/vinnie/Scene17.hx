@@ -39,17 +39,20 @@ class Scene17 extends Scene
             equipItem( null );
             playSound( Assets.eureka, true ).then( function() {
                 makeArt( Assets.cdBeam, 198, 78 );
-                message( "You use the CD to reflect the beam of light.  It might not work in real life, but this is only a stupid game." );
-                playSound( Assets.completeScene, true ).then( function() {
-                    door.style.display = "none";
-                    message( "The door opens and you have completed Scene Seventeen." );
-                    transitionToNextScene( Scene18,
-                        function()
-                        {
-                            playSound( Assets.death );
-                            message( "You walk into the next room of the massive tomb.  Suddenly you are attacked by a giant Dragollater!  He snatches you in his teeth.  You will most likely die!" );
-                        }
-                    );
+                message( "You use the CD to reflect the beam of light.  It might not work in real life, but this is only a stupid game." ).then( function() {
+                    playSound( Assets.completeScene, true ).then( function() {
+                        door.style.display = "none";
+                        message( "The door opens and you have completed Scene Seventeen." ).then( function() {
+                            transitionToNextScene( Scene18,
+                                function(handler)
+                                {
+                                    inventory.removeAllItems();
+                                    playSound( Assets.death );
+                                    message( "You walk into the next room of the massive tomb.  Suddenly you are attacked by a giant Dragollater!  He snatches you in his teeth.  You will most likely die!", "Vinnie's Tomb", Caution ).then(handler);
+                                }
+                            );
+                        } );
+                    } );
                 } );
             } );
         }
