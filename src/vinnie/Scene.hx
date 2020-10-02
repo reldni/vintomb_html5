@@ -768,29 +768,36 @@ class Scene
         scrollBar.appendChild( innerDiv );
 
         dialogLines = lines;
-        dialogScroller.onscroll = onDialogScroll;
 
         curDialogLine = 0;
         curDialogScroll = dialogScroller.scrollLeft;
+        dialogScroller.scrollLeft = 0;
         if( dialogLines != null && dialogLines.length > 0 )
         {
             dialogLines[0]();
         }
+
+        // Register scroll listener as passive to avoid issues with async scrolling in modern browsers.
+        var options = { passive: false };
+        dialogScroller.addEventListener( "scroll", onDialogScroll, options );
 
         return scrollContainer;
     }
 
     function onDialogScroll(e)
     {
-        if( e.currentTarget == dialogScroller )
+        if( e.currentTarget == dialogScroller && !game.isPaused && dialogScroller.scrollLeft != curDialogScroll )
         {
-            var line = curDialogLine;
-            if( !game.isPaused )
-            {
-                line += (dialogScroller.scrollLeft > curDialogScroll ? 1 : -1);
-            }
+            // We want to mimic Win95 style scrollbars that "snap" immediately to the new position.
+            // To prevent inertial scrolling in modern browsers, reset the scroll position.
+            var line = curDialogLine + (dialogScroller.scrollLeft > curDialogScroll ? 1 : -1);
+            dialogScroller.scrollLeft = curDialogScroll;
+
+            // Update dialog.
             dialogGotoLine( line );
         }
+
+        e.preventDefault();
 
         return false;
     }
