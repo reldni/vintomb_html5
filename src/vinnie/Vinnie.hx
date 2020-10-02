@@ -23,6 +23,11 @@ class Vinnie
 {
     public static inline var EXIT_URL = "http://www.reldni.com";
 
+    // v1.0: 2016 original web release?
+    // v1.1: 2017 use HTML message boxes instead of JS alert? NG medals?
+    // v1.2: 10/2/2020 Compiles in Haxe 4, fix scrollbar bugs, publish on GitHub
+    public static inline var VERSION = "1.2";
+
     public static function main()
     {
         new Vinnie();
