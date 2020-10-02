@@ -212,7 +212,7 @@ class Vinnie
     {
         preloader.onPreloadComplete = null;
 
-        if( isMobile && !primedAudio )
+        if( !primedAudio )
         {
             primedAudio = true;
             playButton.style.display = "block";
