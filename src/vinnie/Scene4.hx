@@ -44,7 +44,7 @@ class Scene4 extends Scene
             ),
             speak.bind(
                 Assets.partyBots2,
-                "The key is hidden to have been hidden with the ancient Tibetan handkerchief.",
+                "The key is rumoured to have been hidden with the ancient Tibetan handkerchief.",
                 "Where should I start looking?"
             ),
             function()
